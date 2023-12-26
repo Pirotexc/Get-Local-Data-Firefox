@@ -1,16 +1,31 @@
-// Check if the link element already exists
-let link = document.getElementById('downloadLink');
+function createDownloadLink() {
+  // Retrieve local storage data
+  const localStorageData = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    const value = localStorage.getItem(key);
+    localStorageData[key] = value;
+  }
 
-if (!link) {
+  // Convert data to JSON
+  const jsonData = JSON.stringify(localStorageData, null, 2);
+
+  // Create a Blob with the JSON data
+  const blob = new Blob([jsonData], { type: 'application/json' });
+
   // Create a download link
-  link = document.createElement('a');
-  link.id = 'downloadLink';
+  const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = 'local_storage_data.json';
+
+  // Append the link to the document and trigger the click event
   document.body.appendChild(link);
+  link.click();
+
+  // Clean up
+  document.body.removeChild(link);
 }
 
-// Set the link attributes
-link.href = window.URL.createObjectURL(blob);
-link.download = 'local_storage_data.json';
+// Call the function to execute the code
+createDownloadLink();
 
-// Trigger the click event
-link.click();
