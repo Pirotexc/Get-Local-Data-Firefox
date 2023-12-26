@@ -1,14 +1,16 @@
-// Create a Blob with the JSON data
-const blob = new Blob([jsonData], { type: 'application/json' });
+// Check if the link element already exists
+let link = document.getElementById('downloadLink');
 
-// Create a download link
-const link = document.createElement('a');
-link.href = window.URL.createObjectURL(blob); // Use window.URL.createObjectURL
+if (!link) {
+  // Create a download link
+  link = document.createElement('a');
+  link.id = 'downloadLink';
+  document.body.appendChild(link);
+}
+
+// Set the link attributes
+link.href = window.URL.createObjectURL(blob);
 link.download = 'local_storage_data.json';
 
-// Append the link to the document and trigger the click event
-document.body.appendChild(link);
+// Trigger the click event
 link.click();
-
-// Clean up
-document.body.removeChild(link);
